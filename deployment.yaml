@@ -1,20 +1,33 @@
+# k8s/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: yourapp-deployment
+  name: kuber-py-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: yourapp
+      app: kuber-py
   template:
     metadata:
       labels:
-        app: yourapp
+        app: kuber-py
     spec:
       containers:
-      - name: yourapp-container
-        image: yourusername/yourappname:latest
-        ports:
-        - containerPort: 8080
-
+        - name: kuber-py
+          image: aparnahh/kuber-py:latest
+          ports:
+            - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kuber-py-service
+spec:
+  selector:
+    app: kuber-py
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: ClusterIP
